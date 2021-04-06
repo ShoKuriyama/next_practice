@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Layout from "../components/layout";
+import MyImage from "../components/image";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
             <button className="btn btn-primary">Go to Other</button>
           </Link>
         </div>
+        <MyImage fname="office.jpg" size="300px" />
       </Layout>
     </div>
   );
