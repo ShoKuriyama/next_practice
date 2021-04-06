@@ -1,15 +1,10 @@
 import Link from "next/link";
 import Layout from "../components/layout";
 import MyImage from "../components/image";
-import { useState } from "react";
+import useSWR from "swr";
 
 export default function Home() {
-  const url = "./data.json";
-  const [data, setData] = useState({ message: "", data: [] });
-  fetch(url)
-    .then((res) => res.json())
-    .then((res) => setData(res));
-
+  const { data } = useSWR("/data.json");
   return (
     <div>
       <Layout header="Next.js" title="Top page">
@@ -21,7 +16,7 @@ export default function Home() {
         </div>
         <MyImage fname="office.jpg" size="300px" />
         <div className="alert alert-primary text-center">
-          <h5>{data.message}</h5>
+          <h5>{data != undefined ? data.message : "error..."}</h5>
           <table className="table bg-white">
             <thead className="table-dark">
               <tr>
@@ -31,13 +26,21 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {data.data.map((value, key) => (
-                <tr key={key}>
-                  <th>{value.name}</th>
-                  <td>{value.name}</td>
-                  <td>{value.age}</td>
+              {data != undefined ? (
+                data.data.map((value, key) => (
+                  <tr key={key}>
+                    <th>{value.name}</th>
+                    <td>{value.name}</td>
+                    <td>{value.age}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <th></th>
+                  <td>no data.</td>
+                  <td></td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
